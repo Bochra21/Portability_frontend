@@ -1,13 +1,3 @@
-import { Fragment } from "react";
-import MainNavigation from "./MainNavigation";
+import React from 'react';
 
-const Layout = (props) => {
-  return (
-    <Fragment>
-      <MainNavigation />
-      <main>{props.children}</main>
-    </Fragment>
-  );
-};
-
-export default Layout;
+export const Layout = ({ children }) => <div>{children}</div>;

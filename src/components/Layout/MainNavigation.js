@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
 
-const MainNavigation = () => {
+const MainNavigation = () => 
+{
   return (
     <header className={classes.header}>
       <Link to="/">
@@ -10,12 +11,6 @@ const MainNavigation = () => {
       </Link>
       <nav>
         <ul>
-          <li>
-            <Link to="/auth">Login</Link>
-          </li>
-          <li>
-            <Link to="/profile">Profile</Link>
-          </li>
           <li>
             <button>Logout</button>
           </li>
