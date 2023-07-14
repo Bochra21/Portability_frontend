@@ -8,11 +8,10 @@ import classes from "./AuthForm.module.css";
 const signupUrl = "http://localhost:8080/api/auth/signup";
 const signinUrl = "http://localhost:8080/api/auth/signin";
 
-const AuthForm = ({ showSignUpForm }) => {
+const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
   //console.log(showSignUpForm); //false
  
   const [isSignUp, setIsSignUp] = useState(showSignUpForm);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(isLoggedIn); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,10 +22,11 @@ const AuthForm = ({ showSignUpForm }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    //console.log("handle submit");
     try {
       if (isSignUp) 
       {
+        //console.log("Signing up");
         // Handle sign-up logic
         const response = await axios.post(signupUrl, {
           email: email,
@@ -36,6 +36,7 @@ const AuthForm = ({ showSignUpForm }) => {
         setIsSignUp(false);
       } else {
         // Handle login logic
+        //console.log("Signing in");
         const response = await axios.post(signinUrl, {
           email: email,
           password: password,

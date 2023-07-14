@@ -6,11 +6,12 @@ import AuthPage from "./pages/AuthPage";
 import ConsultationPage from "./pages/ConsultationPage";
 import ModificationPage from "./pages/ModificationPage";
 import Statistique from "./pages/Statistique";
+import ProtectedRoute from "./ProtectedRoute";
 
 export default function App() {
   const [showSignUpForm, setShowSignUpForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  console.log(isLoggedIn);
+  //console.log(isLoggedIn);
   // Retrieve the login status from local storage on component mount.
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
@@ -32,7 +33,7 @@ export default function App() {
     // Set login status to false in local storage and state
     localStorage.setItem("isLoggedIn", "false");
     setIsLoggedIn(false);
-   return <Redirect to="/auth"/>;
+ 
   };
 
   return (
@@ -58,9 +59,9 @@ export default function App() {
           ) }
           {isLoggedIn && (
             <Navbar.Content>
-              <NextUILink color="inherit" onPress={handleLogout}>
+              <Button light color="primary" auto onPress={handleLogout}>  
                 Logout
-              </NextUILink>
+              </Button>
             </Navbar.Content>
           )}
 
@@ -78,11 +79,15 @@ export default function App() {
 
         <Switch>
           <Route path="/auth">
-            <AuthPage showSignUpForm={showSignUpForm} />
+            <AuthPage isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} showSignUpForm={showSignUpForm} />
           </Route>
-          <Route path="/consultation" component={ConsultationPage} />
-          <Route path="/modification" component={ModificationPage} />
-          <Route path="/statistique" component={Statistique} />
+          <ProtectedRoute path="/consultation" component={ConsultationPage} isLoggedIn={isLoggedIn} />
+          <ProtectedRoute path="/modification" component={ModificationPage} isLoggedIn={isLoggedIn} />
+          <ProtectedRoute path="/statistique" component={Statistique} isLoggedIn={isLoggedIn} />
+          {/*when so other routes are matched go to : */}
+          <Route path="/">
+            {isLoggedIn ? <Redirect to="/consultation" /> : <Redirect to="/auth" />}
+          </Route>
         </Switch>
       </Layout>
     </Router>
