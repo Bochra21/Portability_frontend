@@ -1,7 +1,11 @@
-import { Table } from "@nextui-org/react";
+import { Spacer, Table } from "@nextui-org/react";
 
 const ConsultationPage = () => {
   return (
+    <div>
+      
+   
+    <Spacer y={1} />
     <Table
       bordered
       shadow={false}
@@ -51,6 +55,7 @@ const ConsultationPage = () => {
         onPageChange={(page) => console.log({ page })}
       />
     </Table>
+    </div>
   );
 };
 

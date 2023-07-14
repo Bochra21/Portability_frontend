@@ -9,31 +9,31 @@ const signupUrl = "http://localhost:8080/api/auth/signup";
 const signinUrl = "http://localhost:8080/api/auth/signin";
 
 const AuthForm = ({ showSignUpForm }) => {
-  console.log(showSignUpForm); //false
+  //console.log(showSignUpForm); //false
+ 
   const [isSignUp, setIsSignUp] = useState(showSignUpForm);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log(isLoggedIn); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const switchAuthModeHandler = () => {
     setIsSignUp((prevIsSignUp) => !prevIsSignUp);
-    
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      if (isSignUp) {
+      if (isSignUp) 
+      {
         // Handle sign-up logic
         const response = await axios.post(signupUrl, {
           email: email,
           password: password,
         });
 
-        setIsLoggedIn(true);
-        // Save login status in local storage
-        localStorage.setItem("isLoggedIn", "true");
+        setIsSignUp(false);
       } else {
         // Handle login logic
         const response = await axios.post(signinUrl, {
@@ -50,14 +50,9 @@ const AuthForm = ({ showSignUpForm }) => {
     }
   };
 
-  const handleLogout = () => {
-    // Set login status to false in local storage and state
-    localStorage.setItem("isLoggedIn", "false");
-    setIsLoggedIn(false);
-  };
 
   if (isLoggedIn) {
-    return <Redirect to="/" />;
+    return <Redirect to="/consultation" />;
   }
  
   return (

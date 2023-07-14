@@ -1,7 +1,7 @@
 import { Navbar, Button, Link as NextUILink } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { Layout } from "./components/Layout/Layout";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link,Redirect } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import ConsultationPage from "./pages/ConsultationPage";
 import ModificationPage from "./pages/ModificationPage";
@@ -10,7 +10,7 @@ import Statistique from "./pages/Statistique";
 export default function App() {
   const [showSignUpForm, setShowSignUpForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  console.log(isLoggedIn);
   // Retrieve the login status from local storage on component mount.
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
@@ -27,18 +27,24 @@ export default function App() {
     { name: "Statistique", url: "/statistique" },
   ];
 
+  
+  const handleLogout = () => {
+    // Set login status to false in local storage and state
+    localStorage.setItem("isLoggedIn", "false");
+    setIsLoggedIn(false);
+   return <Redirect to="/auth"/>;
+  };
+
   return (
     <Router>
       <Layout>
         <Navbar isBordered variant="sticky" style={{ zIndex: 999 }}>
-          {isLoggedIn ? (
-            <Navbar.Brand>
-              <Navbar.Toggle aria-label="toggle navigation" />
-            </Navbar.Brand>
-          ) : (
-            <div></div>
-          )}
-          {!isLoggedIn ? (
+        {isLoggedIn && (
+           <Navbar.Brand>
+            <Navbar.Toggle aria-label="toggle navigation" />
+           </Navbar.Brand>
+        )}
+          {!isLoggedIn && (
             <Navbar.Content>
               <NextUILink color="inherit" as={Link} to="/auth">
                 Login
@@ -49,10 +55,16 @@ export default function App() {
                 </Button>
               </Navbar.Item>
             </Navbar.Content>
-          ) : (
-            <div></div>
+          ) }
+          {isLoggedIn && (
+            <Navbar.Content>
+              <NextUILink color="inherit" onPress={handleLogout}>
+                Logout
+              </NextUILink>
+            </Navbar.Content>
           )}
-          {isLoggedIn ? (
+
+          {isLoggedIn && (
             <Navbar.Collapse>
               {collapseItems.map((item, index) => (
                 <Navbar.CollapseItem key={index}>
@@ -60,18 +72,13 @@ export default function App() {
                 </Navbar.CollapseItem>
               ))}
             </Navbar.Collapse>
-          ) : (
-            <div></div>
-          )}
+          ) }
+
         </Navbar>
 
         <Switch>
-         
           <Route path="/auth">
-          <AuthPage
-          showSignUpForm={showSignUpForm}
-          />
-         
+            <AuthPage showSignUpForm={showSignUpForm} />
           </Route>
           <Route path="/consultation" component={ConsultationPage} />
           <Route path="/modification" component={ModificationPage} />
