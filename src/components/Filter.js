@@ -4,16 +4,15 @@ import { Dropdown, Input, Grid } from "@nextui-org/react";
 /* onSearchChange (declaration is in the ConsultationPage)
 takes the value entered and changes the searchValue variable */
 
-const Filter = ({ onSearchChange }) => {
-  const [selected, setSelected] = React.useState(new Set(["Numéro"]));
-  const [selectedDate, setSelectedDate] = React.useState("");
-
-  const handleDateChange = (event) => {
-    const selectedDate = event.target.value;
-    setSelectedDate(selectedDate);
-    // Display selected date in the console
-    console.log(selectedDate);
+const Filter = ({ onSearchChange, handledateDebutChange, handledateFinChange }) => {
+  const orangeButton = {
+    color: "white",
+    backgroundColor: "rgb(255, 171 ,108 )",
+    fontFamily: "Open Sans" 
   };
+
+  const [selected, setSelected] = React.useState(new Set(["Numéro"]));
+ 
 
   const selectedValue = React.useMemo(
     () => Array.from(selected).join(", "),
@@ -24,13 +23,12 @@ const Filter = ({ onSearchChange }) => {
     <Grid.Container gap={2} style={{ display: "flex", alignItems: "center" }}>
       <Grid style={{ paddingRight: "0px", marginRight: "0px" }}>
         <Dropdown>
-          <Dropdown.Button flat color="secondary" css={{ tt: "capitalize" }}>
-            {selectedValue}
+          <Dropdown.Button flat color="secondary" style={orangeButton}>
+         <b>   {selectedValue} </b>
           </Dropdown.Button>
 
           <Dropdown.Menu
             aria-label="Single selection actions"
-            color="secondary"
             disallowEmptySelection
             selectionMode="single"
             selectedKeys={selected}
@@ -63,7 +61,7 @@ const Filter = ({ onSearchChange }) => {
         {" "}
         {selectedValue === "Date création" && (
           <div>
-            <Input type="date" width="186px" onChange={handleDateChange} />
+            <Input type="date" width="186px" onChange={onSearchChange} />
           </div>
         )}{" "}
       </Grid>
@@ -84,7 +82,7 @@ const Filter = ({ onSearchChange }) => {
                   <label style={{ marginRight: "15px", fontSize: "15px" }}>
                     Date début
                   </label>
-                  <Input type="date" width="186px" />
+                  <Input type="date" width="186px" onChange={handledateDebutChange} />
                 </div>
               </Grid>
 
@@ -93,7 +91,7 @@ const Filter = ({ onSearchChange }) => {
                   <label style={{ marginRight: "15px", fontSize: "15px" }}>
                     Date fin
                   </label>
-                  <Input type="date" width="186px" />
+                  <Input type="date" width="186px" onChange={handledateFinChange} />
                 </div>
               </Grid>
             </Grid.Container>

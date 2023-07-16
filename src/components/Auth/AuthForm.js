@@ -4,15 +4,16 @@ import { Redirect } from "react-router-dom";
 import { Card, Input, Button } from "@nextui-org/react";
 import { Spacer } from "@nextui-org/react";
 import classes from "./AuthForm.module.css";
+import Cookies from "js-cookie";
 
 const signupUrl = "http://localhost:8080/api/auth/signup";
 const signinUrl = "http://localhost:8080/api/auth/signin";
 
 const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
   //console.log(showSignUpForm); //false
- 
+
   const [isSignUp, setIsSignUp] = useState(showSignUpForm);
-  console.log(isLoggedIn); 
+  console.log(isLoggedIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,8 +25,7 @@ const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
     event.preventDefault();
     //console.log("handle submit");
     try {
-      if (isSignUp) 
-      {
+      if (isSignUp) {
         //console.log("Signing up");
         // Handle sign-up logic
         const response = await axios.post(signupUrl, {
@@ -42,6 +42,12 @@ const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
           password: password,
         });
 
+        // Retrieve the token from the cookie
+        const Token = Cookies.get("bochra");
+
+        // Save the token in local storage
+        localStorage.setItem("Token", Token);
+
         setIsLoggedIn(true);
         // Save login status in local storage
         localStorage.setItem("isLoggedIn", "true");
@@ -51,14 +57,17 @@ const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
     }
   };
 
-
   if (isLoggedIn) {
     return <Redirect to="/consultation" />;
   }
- 
+
   return (
     <Card style={{ maxWidth: "400px" }} className={classes.auth}>
-      <Card.Body onSubmit={handleSubmit} as="form" style={{ paddingTop: "30px" }}>
+      <Card.Body
+        onSubmit={handleSubmit}
+        as="form"
+        style={{ paddingTop: "30px" }}
+      >
         <Input
           clearable
           type="email"
@@ -82,7 +91,7 @@ const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
           hiddenIcon={<LockIcon fill="currentColor" />}
         />
         <Spacer y={1} />
-        <Button className={classes.button} type="submit" color="red" auto>
+        <Button  type="submit" color="red" auto>
           {!isSignUp ? "Login" : "Create Account"}
         </Button>
         <Spacer y={1} />
@@ -102,17 +111,7 @@ const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
 
 export default AuthForm;
 
-
-
- const UnLockIcon = ({
-  fill,
-  filled,
-  size,
-  height,
-  width,
-  label,
-  ...props
-}) => {
+const UnLockIcon = ({ fill, filled, size, height, width, label, ...props }) => {
   return (
     <svg
       data-name="Iconly/Curved/Lock"
@@ -158,18 +157,7 @@ export default AuthForm;
   );
 };
 
-
-
-
-const LockIcon = ({
-  fill,
-  filled,
-  size,
-  height,
-  width,
-  label,
-  ...props
-}) => {
+const LockIcon = ({ fill, filled, size, height, width, label, ...props }) => {
   return (
     <svg
       data-name="Iconly/Curved/Lock"
