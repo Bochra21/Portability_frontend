@@ -1,105 +1,108 @@
 import React from "react";
-import { Dropdown, Input, Grid } from "@nextui-org/react";
+import {  Button,Text, Input, Grid } from "@nextui-org/react";
 
 /* onSearchChange (declaration is in the ConsultationPage)
 takes the value entered and changes the searchValue variable */
 
-const Filter = ({ onSearchChange, handledateDebutChange, handledateFinChange }) => {
+const Filter = ({
+  onSearchChange,
+  handledateDebutChange,
+  handledateFinChange,
+}) => {
   const orangeButton = {
     color: "white",
     backgroundColor: "rgb(255, 171 ,108 )",
-    fontFamily: "Open Sans" 
+    fontFamily: "Open Sans",
   };
 
   const [selected, setSelected] = React.useState(new Set(["Numéro"]));
- 
 
-  const selectedValue = React.useMemo(
-    () => Array.from(selected).join(", "),
-    [selected]
-  );
+  const isMd = useMediaQuery(960);
+
+  // const selectedValue = React.useMemo(
+  //   () => Array.from(selected).join(", "),
+  //   [selected]
+  // );
 
   return (
-    <Grid.Container gap={2} style={{ display: "flex", alignItems: "center" }}>
-      <Grid style={{ paddingRight: "0px", marginRight: "0px" }}>
-        <Dropdown>
-          <Dropdown.Button flat color="secondary" style={orangeButton}>
-         <b>   {selectedValue} </b>
-          </Dropdown.Button>
+    <div>
 
-          <Dropdown.Menu
-            aria-label="Single selection actions"
-            disallowEmptySelection
-            selectionMode="single"
-            selectedKeys={selected}
-            onSelectionChange={setSelected}
-          >
-            <Dropdown.Item key="Numéro">Numéro</Dropdown.Item>
-            <Dropdown.Item key="ID demande">ID demande</Dropdown.Item>
-            <Dropdown.Item key="Date création">Date création</Dropdown.Item>
-            <Dropdown.Item key="Date partage">Date partage</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </Grid>
-      <Grid>
-        {" "}
-        {selectedValue === "Numéro" && (
+      <Grid.Container gap={2}>
+     
+        <Grid xs={12} sm={4} >
+          <Text  css={{ paddingRight: '10px' }} size="$md"> Numéro</Text>
+          <Input
+            type="search"
+            placeholder="Search by number" />
+        </Grid>
+       
+
+        <Grid xs={12} sm={4}>
+          <Text  css={{ paddingRight: '10px' }} size="$md">ID demande</Text>
           <Input
             type="search"
             onChange={onSearchChange}
-            placeholder="Search by number"
+            placeholder="Search by ID demande"
           />
-        )}{" "}
-      </Grid>
-      <Grid>
-        {" "}
-        {selectedValue === "ID demande" && (
-          <Input type="search" onChange={onSearchChange} />
-        )}{" "}
-      </Grid>
-      <Grid>
-        {" "}
-        {selectedValue === "Date création" && (
-          <div>
-            <Input type="date" width="186px" onChange={onSearchChange} />
-          </div>
-        )}{" "}
-      </Grid>
+        </Grid>
 
-      <Grid>
-        {" "}
-        {selectedValue === "Date partage" && (
-          <div>
-            <Grid.Container gap={2} style={{ paddingLeft: "0px" }}>
-              <Grid>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginRight: "60px",
-                  }}
-                >
-                  <label style={{ marginRight: "15px", fontSize: "15px" }}>
-                    Date début
-                  </label>
-                  <Input type="date" width="186px" onChange={handledateDebutChange} />
-                </div>
-              </Grid>
+        <Grid xs={12} sm={4}>
+          <Text  css={{ paddingRight: '10px' }} size="$md">Date création</Text>
+          <Input type="date" width="186px"  onChange={onSearchChange} />
 
-              <Grid>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <label style={{ marginRight: "15px", fontSize: "15px" }}>
-                    Date fin
-                  </label>
-                  <Input type="date" width="186px" onChange={handledateFinChange} />
-                </div>
-              </Grid>
-            </Grid.Container>
-          </div>
-        )}
-      </Grid>
-    </Grid.Container>
+
+        </Grid>
+
+        <Grid xs={7} sm={4}>
+          <Text  css={{ paddingRight: '10px' }} size="$md">Date partage :</Text>
+        </Grid>
+        <Grid xs={7} sm={4}>
+          <Text  css={{ paddingRight: '10px' }} size="$md">Date début</Text>
+          <Input type="date" width="186px" onChange={handledateDebutChange} />
+        </Grid>
+        <Grid xs={7} sm={4}>
+          <Text  css={{ paddingRight: '10px' }} size="$md">Date fin</Text>
+          <Input type="date" width="186px" onChange={handledateFinChange} />
+        </Grid>
+
+      
+      </Grid.Container>
+    </div>
   );
 };
 
 export default Filter;
+
+
+const useMediaQuery = (width) => {
+  const [targetReached, setTargetReached] = React.useState(false);
+
+  const updateTarget = React.useCallback((e) => {
+    if (e.matches) {
+      setTargetReached(true);
+    } else {
+      setTargetReached(false);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const media = window.matchMedia(`(max-width: ${width}px)`);
+
+    const handleChange = (e) => {
+      updateTarget(e);
+    };
+
+    media.addListener(handleChange);
+
+    // Check on mount (callback is not called until a change occurs)
+    if (media.matches) {
+      setTargetReached(true);
+    }
+
+    return () => {
+      media.removeListener(handleChange);
+    };
+  }, []);
+
+  return targetReached;
+};

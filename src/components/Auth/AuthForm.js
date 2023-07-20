@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 import { Card, Input, Button } from "@nextui-org/react";
@@ -12,13 +12,33 @@ const signinUrl = "http://localhost:8080/api/auth/signin";
 const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
   //console.log(showSignUpForm); //false
 
-  const [isSignUp, setIsSignUp] = useState(showSignUpForm);
-  console.log(isLoggedIn);
+  const [isSignUp, setIsSignUp] = useState(false);
+  //console.log("Default",isSignUp);
+
+  useEffect(() => {
+    setIsSignUp(showSignUpForm);
+    console.log("is Sign up (from useEffect) : ",isSignUp);
+  }, [showSignUpForm]);
+
+  // if(showSignUpForm==true){
+  //   setIsSignUp(true);
+  // }
+  // else {setIsSignUp(false);}
+  //setIsSignUp(showSignUpForm);
+  console.log("isLoggedIn :",isLoggedIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const switchAuthModeHandler = () => {
-    setIsSignUp((prevIsSignUp) => !prevIsSignUp);
+    if(isSignUp==true)
+    {
+    setIsSignUp(false);
+    console.log(" from switchAuthModeHandler , isSignUp is : ",isSignUp);}
+    else
+     { setIsSignUp(true); 
+      console.log("switchAuthModeHandler , isSignUp is : ",isSignUp);}
+   // setIsSignUp((prevIsSignUp) => !prevIsSignUp);
+    //console.log("prevIsSignUp",!prevIsSignUp);
   };
 
   const handleSubmit = async (event) => {
@@ -92,7 +112,7 @@ const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
         />
         <Spacer y={1} />
         <Button  type="submit" color="red" auto>
-          {!isSignUp ? "Login" : "Create Account"}
+          {isSignUp ? "Create Account" : "Login"}
         </Button>
         <Spacer y={1} />
         <Button
@@ -100,7 +120,7 @@ const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
           light
           color="red"
           auto
-          onClick={switchAuthModeHandler}
+          onPress={switchAuthModeHandler}
         >
           {!isSignUp ? "Create new account" : "Login with existing account"}
         </Button>

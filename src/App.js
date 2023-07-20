@@ -29,16 +29,20 @@ export default function App() {
   };
   const [showSignUpForm, setShowSignUpForm] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //console.log(isLoggedIn);
+
   // Retrieve the login status from local storage on component mount.
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
     const parsedLoginStatus = JSON.parse(storedLoginStatus);
-    setIsLoggedIn(parsedLoginStatus);
+    //setIsLoggedIn(parsedLoginStatus);
+    setIsLoggedIn(true);
   }, []);
 
   const handleSignUpClick = () => {
     setShowSignUpForm(true); // Toggle the sign-up form display
+  };
+  const handleSignInClick = () => {
+    setShowSignUpForm(false); // Toggle the sign-up form display
   };
 
   const collapseItems = [
@@ -64,9 +68,9 @@ export default function App() {
           )}
           {!isLoggedIn && (
             <Navbar.Content>
-              <NextUILink color="inherit" as={Link} to="/auth">
-                Login
-              </NextUILink>
+              <Button auto light onPress={handleSignInClick}>
+                Log In
+              </Button>
 
               <Button auto style={orangeButton} onPress={handleSignUpClick}>
                 Sign Up
@@ -86,15 +90,26 @@ export default function App() {
             </Navbar.Content>
           )}
 
-          {isLoggedIn && (
-            <Navbar.Collapse>
+          {/* {isLoggedIn && (
+            <Navbar.Collapse >
               {collapseItems.map((item, index) => (
-                <Navbar.CollapseItem key={index}>
-                  <NextUILink href={item.url}>{item.name}</NextUILink>
+                <Navbar.CollapseItem >
+                  <NextUILink  color="warning" href={item.url}>{item.name}</NextUILink>
+                  {console.log("item.url:",item.url)}
                 </Navbar.CollapseItem>
               ))}
             </Navbar.Collapse>
-          )}
+          )} */}
+
+          {
+            <Navbar.Collapse>
+              <Navbar.CollapseItem>
+                <Link to="/consultation">Consultation</Link>
+                <Link to="/modification">Gestion</Link>
+                <Link to="/statistique">Statistique</Link>
+              </Navbar.CollapseItem>
+            </Navbar.Collapse>
+          }
         </Navbar>
 
         <Switch>
@@ -120,13 +135,9 @@ export default function App() {
             component={Statistique}
             isLoggedIn={isLoggedIn}
           />
-          {/*when so other routes are matched go to : */}
+          {/*when no other routes are matched go to : */}
           <Route path="/">
-            {isLoggedIn ? (
-              <Redirect to="/consultation" />
-            ) : (
-              <Redirect to="/auth" />
-            )}
+            {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/auth" />}
           </Route>
         </Switch>
       </Layout>
