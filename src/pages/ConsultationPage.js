@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Spacer, Pagination, Grid, Button, Table } from "@nextui-org/react";
+import { Spacer,Card, Pagination, Grid, Button, Table } from "@nextui-org/react";
 import Filter from "./../components/Filter";
 import axios from "axios";
 import TelechargerBtn from "../components/TelechargerBtn";
@@ -35,11 +35,13 @@ const ConsultationPage = () => {
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
+   document.body.style.backgroundColor = "#FEF8FA"; 
+
     axios
       .get("http://localhost:8080/api/consultations")
       .then((response) => {
         if (response.data) {
-        let arrayOfObjects=response.data;
+          let arrayOfObjects = response.data;
           const arrayOfArrays = arrayOfObjects.map((obj) => Object.values(obj));
 
           console.log(arrayOfArrays);
@@ -54,8 +56,10 @@ const ConsultationPage = () => {
         console.log("Error:", error.message);
         setLoading(false); // Set loading state to false on error
       });
-  }, []); // Empty dependency array to run only once on initial render
 
+    // Save the last visited route to local storage
+    //  localStorage.setItem("lastVisitedRoute", window.location.pathname);
+  }, []); // Empty dependency array to run only once on initial render
 
   const handleSearchChange = (event) => {
     setSearchValue(event.target.value);
@@ -63,17 +67,16 @@ const ConsultationPage = () => {
 
   //Filtering the tableData array and saving the result array(s) in the filteredRowsByNumber variable.
   const filteredRowsByNumber = tableData.filter((row) =>
-  row[1].toString().toLowerCase().includes(searchValue.toLowerCase())
-);
+    row[1].toString().toLowerCase().includes(searchValue.toLowerCase())
+  );
 
-const filteredRowsById = tableData.filter((row) =>
-  row[0].toString().toLowerCase().includes(searchValue.toLowerCase())
-);
+  const filteredRowsById = tableData.filter((row) =>
+    row[0].toString().toLowerCase().includes(searchValue.toLowerCase())
+  );
 
-const filteredRowsByCreationDate = tableData.filter((row) =>
-  row[3].toString().toLowerCase().includes(searchValue.toLowerCase())
-);
-
+  const filteredRowsByCreationDate = tableData.filter((row) =>
+    row[3].toString().toLowerCase().includes(searchValue.toLowerCase())
+  );
 
   // Filtering the tableData array based on the selected date range
   const filteredRowsByDateRange = tableData.filter((row) => {
@@ -89,20 +92,26 @@ const filteredRowsByCreationDate = tableData.filter((row) =>
   }
 
   return (
-    <div>
-      <Spacer y={1} />
+    <div style={{ padding: "10px", margin: "6px" }}>
+     
+     <div style={{ paddingBottom: "10px" }}>
       <Filter
         onSearchChange={handleSearchChange}
         handledateDebutChange={handledateDebutChange}
         handledateFinChange={handledateFinChange}
       />
-      <Spacer y={1} />
+    </div>
+      <div >
+      <Card>
       <Table
         color="secondary"
         bordered
         css={{
           height: "auto",
           minWidth: "100%",
+          paddingLeft: "25px",
+          paddingRight: "25px",
+         
         }}
       >
         {/* Table Header */}
@@ -120,45 +129,45 @@ const filteredRowsByCreationDate = tableData.filter((row) =>
           {searchValue !== "" &&
             filteredRowsByNumber.map((row, index) => (
               <Table.Row key={index}>
-                  <Table.Cell>{row[1]}</Table.Cell>
-                  <Table.Cell>{row[2]}</Table.Cell>
-                  <Table.Cell>{row[0]}</Table.Cell>
-                  <Table.Cell>{row[3]}</Table.Cell>
-                  <Table.Cell>{row[4]}</Table.Cell>
-                </Table.Row>
+                <Table.Cell>{row[1]}</Table.Cell>
+                <Table.Cell>{row[2]}</Table.Cell>
+                <Table.Cell>{row[0]}</Table.Cell>
+                <Table.Cell>{row[3]}</Table.Cell>
+                <Table.Cell>{row[4]}</Table.Cell>
+              </Table.Row>
             ))}
 
           {searchValue !== "" &&
             filteredRowsById.map((row, index) => (
               <Table.Row key={index}>
+                <Table.Cell>{row[1]}</Table.Cell>
+                <Table.Cell>{row[2]}</Table.Cell>
+                <Table.Cell>{row[0]}</Table.Cell>
+                <Table.Cell>{row[3]}</Table.Cell>
+                <Table.Cell>{row[4]}</Table.Cell>
+              </Table.Row>
+            ))}
+
+          {searchValue !== "" &&
+            filteredRowsByCreationDate.map((row, index) => (
+              <Table.Row key={index}>
+                <Table.Cell>{row[1]}</Table.Cell>
+                <Table.Cell>{row[2]}</Table.Cell>
+                <Table.Cell>{row[0]}</Table.Cell>
+                <Table.Cell>{row[3]}</Table.Cell>
+                <Table.Cell>{row[4]}</Table.Cell>
+              </Table.Row>
+            ))}
+
+          {dateDebut !== null && dateFin !== null
+            ? filteredRowsByDateRange.map((row, index) => (
+                <Table.Row key={index}>
                   <Table.Cell>{row[1]}</Table.Cell>
                   <Table.Cell>{row[2]}</Table.Cell>
                   <Table.Cell>{row[0]}</Table.Cell>
                   <Table.Cell>{row[3]}</Table.Cell>
                   <Table.Cell>{row[4]}</Table.Cell>
                 </Table.Row>
-            ))}
-
-          {searchValue !== "" &&
-            filteredRowsByCreationDate.map((row, index) => (
-              <Table.Row key={index}>
-              <Table.Cell>{row[1]}</Table.Cell>
-              <Table.Cell>{row[2]}</Table.Cell>
-              <Table.Cell>{row[0]}</Table.Cell>
-              <Table.Cell>{row[3]}</Table.Cell>
-              <Table.Cell>{row[4]}</Table.Cell>
-            </Table.Row>
-            ))}
-
-          {dateDebut !== null && dateFin !== null
-            ? filteredRowsByDateRange.map((row, index) => (
-              <Table.Row key={index}>
-              <Table.Cell>{row[1]}</Table.Cell>
-              <Table.Cell>{row[2]}</Table.Cell>
-              <Table.Cell>{row[0]}</Table.Cell>
-              <Table.Cell>{row[3]}</Table.Cell>
-              <Table.Cell>{row[4]}</Table.Cell>
-            </Table.Row>
               ))
             : searchValue === "" &&
               tableData.map((row, index) => (
@@ -182,9 +191,9 @@ const filteredRowsByCreationDate = tableData.filter((row) =>
           onPageChange={(page) => console.log({ page })}
           css={{
             ".nextui-c-cUthvm-dZWCtT-active-true": {
-              boxShadow: "0px 0px 5px 2px rgba(255, 171, 108, 0.4)",
+             
               borderRadius: "10px",
-              backgroundColor: "rgb(255, 171, 108)",
+              backgroundColor: "#BE92A2",
             },
             ".nextui-c-cUthvm-dZWCtT-active-true .nextui-c-fItrmj": {
               color: "white",
@@ -193,26 +202,25 @@ const filteredRowsByCreationDate = tableData.filter((row) =>
           }}
         />
       </Table>
-
+      </Card>
+      </div>
       <Spacer y={1} />
       <TelechargerBtn tableData={tableData} />
-
+      <Spacer y={1} />
     </div>
   );
 };
 
 export default ConsultationPage;
 
-
-
 /**The order of the columns in the response in unlike the order displayed
- * 
+ *
  * DISPLAYED             RESPONSE
- * 
+ *
  * 1                        0
  * 2                        1
  * 0                        2
  * 3                        3
  * 4                        4
- * 
+ *
  */

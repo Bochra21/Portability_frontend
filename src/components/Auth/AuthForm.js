@@ -77,9 +77,9 @@ const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
     }
   };
 
-  if (isLoggedIn) {
-    return <Redirect to="/consultation" />;
-  }
+   if (isLoggedIn) {
+     return <Redirect to="/" />;
+   }
 
   return (
     <Card style={{ maxWidth: "400px" }} className={classes.auth}>
@@ -89,7 +89,7 @@ const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
         style={{ paddingTop: "30px" }}
       >
         <Input
-          clearable
+        
           type="email"
           labelPlaceholder="Email"
           id="email"
@@ -111,7 +111,7 @@ const AuthForm = ({ showSignUpForm, isLoggedIn, setIsLoggedIn }) => {
           hiddenIcon={<LockIcon fill="currentColor" />}
         />
         <Spacer y={1} />
-        <Button  type="submit" color="red" auto>
+        <Button  type="submit" style={{backgroundColor:"#a2be92"}} auto>
           {isSignUp ? "Create Account" : "Login"}
         </Button>
         <Spacer y={1} />

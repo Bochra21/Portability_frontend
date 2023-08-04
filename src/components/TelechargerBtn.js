@@ -5,8 +5,8 @@ const TelechargerBtn = ({tableData}) => {
 
 
   const grayButton = {
-    color: "rgb(52, 58 ,64)",
-    backgroundColor: "rgb(52, 58 ,64,0.2)",
+    color: "white",
+    backgroundColor: "#94596d",
     fontFamily: "Open Sans",
   };
 
