@@ -1,13 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Open+Sans:wght@400;700&display=swap");
 
 * {
-  box-sizing: border-box;
+  margin-left: 0px;
+  padding-left: 0px;
+  text-decoration: none;
 }
 
 body {
   font-family: "Open Sans";
-
-  padding: 2px;
+  margin-left: 0px;
+  padding-left: 0px;
  
 }
 
@@ -18,4 +20,52 @@ h4,
 h5,
 h6 {
   font-family: "Lato";
+}
+
+.container {
+  display: flex;
+ 
+}
+main {
+  width: 100%;
+}
+.sidebar {
+  background: #5F4951;
+  color:white;
+  height: 100vh;
+  width: 200px;
+  transition: all 0.5s;
+}
+.top_section {
+  display: flex;
+  align-items: center;
+  padding: 20px 15px;
+}
+
+.bars {
+  display: flex;
+  font-size: 25px;
+  margin-left: 50px;
+}
+.link {
+  text-decoration: none;
+  display: flex;
+  color: #fff;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+}
+.link:hover {
+  background:#BE92A2;
+  color: #000;
+  transition: all 0.5s;
+}
+.active {
+  background: #F8F1F8;
+  color: #000;
+ 
+}
+.icon,
+.link_text {
+  font-size: 20px;
 }

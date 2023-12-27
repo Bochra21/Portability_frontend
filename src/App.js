@@ -4,7 +4,8 @@ import { Layout } from "./components/Layout/Layout";
 import { Button as btn } from "react-bootstrap/Button";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './index.css';
+import Sidebar from "./components/Sidebar";
+import "./index.css";
 import {
   BrowserRouter as Router,
   Switch,
@@ -28,12 +29,12 @@ export default function App() {
   const linkStyle = {
     color: "#343a40", // Set your desired text color
     textDecoration: "none", // Remove the default underline
-    marginRight: "10px", // Add some spacing between links 
-    borderBottom: '1px solid gray', // Add a thin bottom border
-    display: 'block',
-    paddingTop:"15px",
-    paddingBottom:"15px",
-    fontSize: "20px", 
+    marginRight: "10px", // Add some spacing between links
+    borderBottom: "1px solid gray", // Add a thin bottom border
+    display: "block",
+    paddingTop: "15px",
+    paddingBottom: "15px",
+    fontSize: "20px",
   };
 
   const MyButton = {
@@ -51,13 +52,12 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Retrieve the login status from local storage on component mount.
- useEffect(() => {
-
-  document.body.style.backgroundColor = "#F8F1F8"; 
+  useEffect(() => {
+    document.body.style.backgroundColor = "#F8F1F8";
     // Retrieve the login status from local storage on component mount.
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
-    const parsedLoginStatus = JSON.parse(storedLoginStatus);
-    setIsLoggedIn(parsedLoginStatus);
+    const parsedLoginStatus = JSON.parse(true);
+    setIsLoggedIn(true);
 
     // Get the last visited route from local storage and redirect if logged in.
     // if (parsedLoginStatus) {
@@ -90,19 +90,19 @@ export default function App() {
   return (
     <Router>
       <Layout>
-        <Navbar css={{
-  $$navbarBlurBackgroundColor: "#BE92A2"}} isBordered variant="sticky"  style={{ zIndex: 999 }} >
-          {isLoggedIn && (
-            <btn variant="primary" onClick={handleShow}>
-                <MenuIcon fill="white" size={24} />
-            </btn>
-          )}
-
+        <Navbar
+          css={{
+            $$navbarBlurBackgroundColor: "#BE92A2",
+          }}
+          isBordered
+          variant="sticky"
+          style={{ zIndex: 999 }}
+        >
           <Offcanvas show={show} onHide={handleClose}>
             <Offcanvas.Header closeButton>
               <Offcanvas.Title> </Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Body style={{ backgroundColor: 'white' }}>
+            <Offcanvas.Body style={{ backgroundColor: "white" }}>
               <div>
                 <Link to="/consultation" style={linkStyle}>
                   Consultation
@@ -125,7 +125,12 @@ export default function App() {
 
           {!isLoggedIn && (
             <Navbar.Content>
-              <Button auto light css={{color:"white"}} onPress={handleSignInClick}>
+              <Button
+                auto
+                light
+                css={{ color: "white" }}
+                onPress={handleSignInClick}
+              >
                 Log In
               </Button>
 
@@ -169,42 +174,81 @@ export default function App() {
           }
         </Navbar>
 
-        <Switch>
-          <Route path="/auth">
-            <AuthPage
-              isLoggedIn={isLoggedIn}
-              setIsLoggedIn={setIsLoggedIn}
-              showSignUpForm={showSignUpForm}
-            />
-          </Route>
-          <ProtectedRoute
-            path="/consultation"
-            component={ConsultationPage}
-           
+        {isLoggedIn ? (
+          <Sidebar>
+            <Switch>
+              <Route path="/auth">
+                <AuthPage
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  showSignUpForm={showSignUpForm}
+                />
+              </Route>
+              <ProtectedRoute
+                path="/consultation"
+                component={ConsultationPage}
+                isLoggedIn={isLoggedIn}
+              />
+              <ProtectedRoute
+                path="/modification"
+                component={ModificationPage}
+                isLoggedIn={isLoggedIn}
+              />
+              <ProtectedRoute
+                path="/statistique"
+                component={Statistique}
+                isLoggedIn={isLoggedIn}
+              />
+              {/*when no other routes are matched go to : */}
+              <Route path="/">
+                {isLoggedIn ? (
+                  <Redirect to="/consultation" />
+                ) : (
+                  <Redirect to="/auth" />
+                )}
+              </Route>
+            </Switch>
+          </Sidebar>
+        ): <Switch>
+        <Route path="/auth">
+          <AuthPage
             isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            showSignUpForm={showSignUpForm}
           />
-          <ProtectedRoute
-            path="/modification"
-            component={ModificationPage}
-          
-            isLoggedIn={isLoggedIn}
-          />
-          <ProtectedRoute
-            path="/statistique"
-            component={Statistique}
-          
-            isLoggedIn={isLoggedIn}
-          />
-          {/*when no other routes are matched go to : */}
-          <Route path="/">
-            {isLoggedIn ? <Redirect to="/consultation" /> : <Redirect to="/auth" />}
-          </Route>
-        </Switch>
+        </Route>
+        <ProtectedRoute
+          path="/consultation"
+          component={ConsultationPage}
+          isLoggedIn={isLoggedIn}
+        />
+        <ProtectedRoute
+          path="/modification"
+          component={ModificationPage}
+          isLoggedIn={isLoggedIn}
+        />
+        <ProtectedRoute
+          path="/statistique"
+          component={Statistique}
+          isLoggedIn={isLoggedIn}
+        />
+        {/*when no other routes are matched go to : */}
+        <Route path="/">
+          {isLoggedIn ? (
+            <Redirect to="/consultation" />
+          ) : (
+            <Redirect to="/auth" />
+          )}
+        </Route>
+      </Switch>
+        
+        
+        
+        }
       </Layout>
     </Router>
   );
 }
-
 
 const MenuIcon = ({ fill, size, height, width, label, ...props }) => {
   return (
@@ -223,4 +267,3 @@ const MenuIcon = ({ fill, size, height, width, label, ...props }) => {
     </svg>
   );
 };
-

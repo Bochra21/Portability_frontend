@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Spacer,Card, Pagination, Grid, Button, Table } from "@nextui-org/react";
+import {
+  Spacer,
+  Card,
+  Pagination,
+  Grid,
+  Button,
+  Table,
+} from "@nextui-org/react";
 import Filter from "./../components/Filter";
 import axios from "axios";
 import TelechargerBtn from "../components/TelechargerBtn";
@@ -35,7 +42,7 @@ const ConsultationPage = () => {
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-   document.body.style.backgroundColor = "#FEF8FA"; 
+    document.body.style.backgroundColor = "#FEF8FA";
 
     axios
       .get("http://localhost:8080/api/consultations")
@@ -93,116 +100,113 @@ const ConsultationPage = () => {
 
   return (
     <div style={{ padding: "10px", margin: "6px" }}>
-     
-     <div style={{ paddingBottom: "10px" }}>
-      <Filter
-        onSearchChange={handleSearchChange}
-        handledateDebutChange={handledateDebutChange}
-        handledateFinChange={handledateFinChange}
-      />
-    </div>
-      <div >
-      <Card>
-      <Table
-        color="secondary"
-        bordered
-        css={{
-          height: "auto",
-          minWidth: "100%",
-          paddingLeft: "25px",
-          paddingRight: "25px",
-         
-        }}
-      >
-        {/* Table Header */}
-        <Table.Header>
-          <Table.Column>Numéro</Table.Column>
-          <Table.Column>RIO</Table.Column>
-          <Table.Column>ID demande</Table.Column>
-          <Table.Column>Date création</Table.Column>
-          <Table.Column>Date partage</Table.Column>
-        </Table.Header>
-
-        {/* Table Body */}
-        <Table.Body>
-          {/* This method displays the rows of filteredRowsByNumber (if it contains any)  */}
-          {searchValue !== "" &&
-            filteredRowsByNumber.map((row, index) => (
-              <Table.Row key={index}>
-                <Table.Cell>{row[1]}</Table.Cell>
-                <Table.Cell>{row[2]}</Table.Cell>
-                <Table.Cell>{row[0]}</Table.Cell>
-                <Table.Cell>{row[3]}</Table.Cell>
-                <Table.Cell>{row[4]}</Table.Cell>
-              </Table.Row>
-            ))}
-
-          {searchValue !== "" &&
-            filteredRowsById.map((row, index) => (
-              <Table.Row key={index}>
-                <Table.Cell>{row[1]}</Table.Cell>
-                <Table.Cell>{row[2]}</Table.Cell>
-                <Table.Cell>{row[0]}</Table.Cell>
-                <Table.Cell>{row[3]}</Table.Cell>
-                <Table.Cell>{row[4]}</Table.Cell>
-              </Table.Row>
-            ))}
-
-          {searchValue !== "" &&
-            filteredRowsByCreationDate.map((row, index) => (
-              <Table.Row key={index}>
-                <Table.Cell>{row[1]}</Table.Cell>
-                <Table.Cell>{row[2]}</Table.Cell>
-                <Table.Cell>{row[0]}</Table.Cell>
-                <Table.Cell>{row[3]}</Table.Cell>
-                <Table.Cell>{row[4]}</Table.Cell>
-              </Table.Row>
-            ))}
-
-          {dateDebut !== null && dateFin !== null
-            ? filteredRowsByDateRange.map((row, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>{row[1]}</Table.Cell>
-                  <Table.Cell>{row[2]}</Table.Cell>
-                  <Table.Cell>{row[0]}</Table.Cell>
-                  <Table.Cell>{row[3]}</Table.Cell>
-                  <Table.Cell>{row[4]}</Table.Cell>
-                </Table.Row>
-              ))
-            : searchValue === "" &&
-              tableData.map((row, index) => (
-                <Table.Row key={index}>
-                  <Table.Cell>{row[1]}</Table.Cell>
-                  <Table.Cell>{row[2]}</Table.Cell>
-                  <Table.Cell>{row[0]}</Table.Cell>
-                  <Table.Cell>{row[3]}</Table.Cell>
-                  <Table.Cell>{row[4]}</Table.Cell>
-                </Table.Row>
-              ))}
-        </Table.Body>
-
-        {/* Pagination */}
-        <Table.Pagination
-          animated={false}
-          noMargin
-          color="red"
-          align="center"
-          rowsPerPage={4}
-          onPageChange={(page) => console.log({ page })}
-          css={{
-            ".nextui-c-cUthvm-dZWCtT-active-true": {
-             
-              borderRadius: "10px",
-              backgroundColor: "#BE92A2",
-            },
-            ".nextui-c-cUthvm-dZWCtT-active-true .nextui-c-fItrmj": {
-              color: "white",
-            },
-            ".nextui-c-fItrmj": { color: "#7e868c" },
-          }}
+      <div style={{ paddingBottom: "10px" }}>
+        <Filter
+          onSearchChange={handleSearchChange}
+          handledateDebutChange={handledateDebutChange}
+          handledateFinChange={handledateFinChange}
         />
-      </Table>
-      </Card>
+      </div>
+      <div >
+        <Card >
+          <Table
+            color="secondary"
+            bordered
+            css={{
+              height: "auto",
+              minWidth: "100%",
+              paddingLeft: "25px",
+              paddingRight: "25px",
+            }}
+          >
+            {/* Table Header */}
+            <Table.Header>
+              <Table.Column>Numéro</Table.Column>
+              <Table.Column>RIO</Table.Column>
+              <Table.Column>ID demande</Table.Column>
+              <Table.Column>Date création</Table.Column>
+              <Table.Column>Date partage</Table.Column>
+            </Table.Header>
+
+            {/* Table Body */}
+            <Table.Body>
+              {/* This method displays the rows of filteredRowsByNumber (if it contains any)  */}
+              {searchValue !== "" &&
+                filteredRowsByNumber.map((row, index) => (
+                  <Table.Row key={index}>
+                    <Table.Cell>{row[1]}</Table.Cell>
+                    <Table.Cell>{row[2]}</Table.Cell>
+                    <Table.Cell>{row[0]}</Table.Cell>
+                    <Table.Cell>{row[3]}</Table.Cell>
+                    <Table.Cell>{row[4]}</Table.Cell>
+                  </Table.Row>
+                ))}
+
+              {searchValue !== "" &&
+                filteredRowsById.map((row, index) => (
+                  <Table.Row key={index}>
+                    <Table.Cell>{row[1]}</Table.Cell>
+                    <Table.Cell>{row[2]}</Table.Cell>
+                    <Table.Cell>{row[0]}</Table.Cell>
+                    <Table.Cell>{row[3]}</Table.Cell>
+                    <Table.Cell>{row[4]}</Table.Cell>
+                  </Table.Row>
+                ))}
+
+              {searchValue !== "" &&
+                filteredRowsByCreationDate.map((row, index) => (
+                  <Table.Row key={index}>
+                    <Table.Cell>{row[1]}</Table.Cell>
+                    <Table.Cell>{row[2]}</Table.Cell>
+                    <Table.Cell>{row[0]}</Table.Cell>
+                    <Table.Cell>{row[3]}</Table.Cell>
+                    <Table.Cell>{row[4]}</Table.Cell>
+                  </Table.Row>
+                ))}
+
+              {dateDebut !== null && dateFin !== null
+                ? filteredRowsByDateRange.map((row, index) => (
+                    <Table.Row key={index}>
+                      <Table.Cell>{row[1]}</Table.Cell>
+                      <Table.Cell>{row[2]}</Table.Cell>
+                      <Table.Cell>{row[0]}</Table.Cell>
+                      <Table.Cell>{row[3]}</Table.Cell>
+                      <Table.Cell>{row[4]}</Table.Cell>
+                    </Table.Row>
+                  ))
+                : searchValue === "" &&
+                  tableData.map((row, index) => (
+                    <Table.Row key={index}>
+                      <Table.Cell>{row[1]}</Table.Cell>
+                      <Table.Cell>{row[2]}</Table.Cell>
+                      <Table.Cell>{row[0]}</Table.Cell>
+                      <Table.Cell>{row[3]}</Table.Cell>
+                      <Table.Cell>{row[4]}</Table.Cell>
+                    </Table.Row>
+                  ))}
+            </Table.Body>
+
+            {/* Pagination */}
+            <Table.Pagination
+              animated={false}
+              noMargin
+              color="red"
+              align="center"
+              rowsPerPage={4}
+              onPageChange={(page) => console.log({ page })}
+              css={{
+                ".nextui-c-cUthvm-dZWCtT-active-true": {
+                  borderRadius: "10px",
+                  backgroundColor: "#BE92A2",
+                },
+                ".nextui-c-cUthvm-dZWCtT-active-true .nextui-c-fItrmj": {
+                  color: "white",
+                },
+                ".nextui-c-fItrmj": { color: "#7e868c" },
+              }}
+            />
+          </Table>
+        </Card>
       </div>
       <Spacer y={1} />
       <TelechargerBtn tableData={tableData} />
